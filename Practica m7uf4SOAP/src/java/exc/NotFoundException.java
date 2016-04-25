@@ -6,13 +6,13 @@ package exc;
  * @author mor
  * @version 240416
  */
-public class PartidaNotFoundException extends Exception {
+public class NotFoundException extends Exception {
 
     /**
      * Creates a new instance of <code>PartidaNotFoundException</code> without
      * detail message.
      */
-    public PartidaNotFoundException() {
+    public NotFoundException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public class PartidaNotFoundException extends Exception {
      *
      * @param msg the detail message.
      */
-    public PartidaNotFoundException(String msg) {
+    public NotFoundException(String msg) {
         super(msg);
     }
 }

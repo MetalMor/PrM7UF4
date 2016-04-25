@@ -1,13 +1,16 @@
 package ppt.ws;
 
+import exc.NotFoundException;
 import java.util.Objects;
 
 /**
+ * Clase que representa una partida entre 2 jugadores, identificada por un campo
+ * String.
  *
  * @author mor
  * @version 240416
  */
-class Partida {
+public class Partida {
     
     private String id;
     private Jugador j1;
@@ -23,34 +26,43 @@ class Partida {
     /**
      * Actualiza el estado de la partida y retorna quien gana.
      * 
-     * @param estado Resultado de restar los estados de los jugadores.
      * @return Positivo si gana J1, negativo si gana J2.
      */
     public int quienGana() {
         int estado = getJ1().getEstado() - getJ2().getEstado();
         if (estado == 0) {
-            return getJ1().getVictorias() - getJ2().getVictorias();
+            System.out.println("Empate");
+            return victorias();
         }
         if(estado%2 == 0) {
-            if (estado > 0)
-                getJ1().addVictoria();
-            else
-                getJ2().addVictoria();
-        } else {
             if (estado < 0)
                 getJ1().addVictoria();
             else
                 getJ2().addVictoria();
+        } else {
+            if (estado > 0)
+                getJ1().addVictoria();
+            else
+                getJ2().addVictoria();
         }
-        return getJ1().getVictorias() - getJ2().getVictorias();
+        return victorias();
     }
 
-    public Jugador getJugador(String nombre) {
+    public int victorias() {
+        int victoriasJ1 = getJ1().getVictorias();
+        int victoriasJ2 = getJ2().getVictorias();
+        return victoriasJ1>victoriasJ2 ? 
+                victoriasJ1 :
+                victoriasJ2>victoriasJ1 ? 
+                    -victoriasJ2 : 0;
+    }
+    
+    public Jugador getJugador(String nombre) throws NotFoundException {
         if (getJ1().getNombre().equals(nombre))
             return j1;
         if(getJ2().getNombre().equals(nombre))
             return j2;
-        return null;
+        throw new NotFoundException("El jugador \"" + nombre + "\" no está en esta partida.");
     }
     
     public String getId() {
@@ -93,6 +105,11 @@ class Partida {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return getId();
     }
     
 }

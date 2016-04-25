@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author mor
  * @version 240416
  */
-class Jugador {
+public class Jugador {
     
     private String nombre;
     private int victorias = 0;
@@ -24,6 +24,7 @@ class Jugador {
     }
 
     public int addVictoria() {
+        System.out.println("Gana " + this);
         setVictorias(getVictorias()+1);
         return getVictorias();
     }
@@ -70,6 +71,9 @@ class Jugador {
         return true;
     }
     
-    
+    @Override
+    public String toString() {
+        return getNombre();
+    }
     
 }
