@@ -20,7 +20,7 @@ import utils.ServletUtils;
  * @author mor
  * @version 110416
  */
-@WebServlet(name = "ConsumidorServlet", urlPatterns = {"/PPT"})
+@WebServlet(name = "IniciServlet", urlPatterns = {"/PPT/Inici"})
 public class IniciServlet extends HttpServlet {
     
     private static final String DESC = "PEDRA/PAPER/TISORES";
@@ -41,7 +41,7 @@ public class IniciServlet extends HttpServlet {
         String gameId = request.getParameter("idPartida");
         List<Partida> partidas = ServletUtils.getPartidas();
         
-        String ruta = "";
+        String ruta;
         
         boolean exists = false;
         for (Partida partida: partidas) {
