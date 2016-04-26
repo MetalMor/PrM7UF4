@@ -21,6 +21,7 @@ public class Main {
         
         PedraPaperTisores ppt = new PedraPaperTisores();
         
+        /* PRUEBA DE LOS MÉTODOS DEL WEBSERVICE */
         ppt.iniciarJoc(cp);
         ppt.afegirJugador(cp, j1);
         ppt.afegirJugador(cp, j2);
