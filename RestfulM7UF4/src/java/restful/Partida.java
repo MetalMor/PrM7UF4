@@ -1,4 +1,4 @@
-package ppt.ws;
+package restful;
 
 import exc.NotFoundException;
 import java.util.Objects;

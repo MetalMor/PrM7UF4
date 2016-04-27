@@ -1,21 +1,31 @@
-package ppt.ws;
+package restful;
 
 import exc.NotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.Produces;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
+import javax.ws.rs.core.MediaType;
 
 /**
+ * REST Web Service
  *
  * @author mor
- * @version 240416
+ * @version 110416
  */
-@WebService(serviceName = "PedraPaperTisores")
+@Path("salutacio")
 public class PedraPaperTisores {
-    
+
     private List<Partida> partidas = new ArrayList<>();
     
     public static final int PIEDRA = -1;
@@ -29,15 +39,24 @@ public class PedraPaperTisores {
     public void setPartidas(List<Partida> partidas) {
         this.partidas = partidas;
     }
+    
+    @Context
+    private UriInfo context;
 
     /**
+     * Creates a new instance of SalutacioREST
+     */
+    public PedraPaperTisores() {
+    }
+/**
      * Inicia una partida añadiéndola a la lista de partidas.
      * 
      * @param cp Código String de la partida
      * @return Boolean true si se añadió la partida, false si no.
      */
-    @WebMethod(operationName = "iniciarJoc")
-    public boolean iniciarJoc(@WebParam(name = "codiPartida") String cp) {
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    public boolean iniciarJoc(String cp) {
         Partida p = new Partida();
         p.setId(cp);
         //return getPartidas().add(p);
@@ -48,9 +67,9 @@ public class PedraPaperTisores {
         return false;
     }
     
-    @WebMethod(operationName = "afegirJugador")
-    public void afegirJugador(@WebParam(name = "codiPartida") String cp, 
-            @WebParam(name = "jugador") String j) {
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void afegirJugador(String cp, String j) {
         Iterator<Partida> it;
         Partida p = null;
         for (it = partidas.iterator(); 
@@ -68,9 +87,9 @@ public class PedraPaperTisores {
         }
     }
     
-    @WebMethod(operationName = "moureJugador")
-    public void moureJugador(@WebParam(name = "jugador")String jugador, 
-            @WebParam(name = "tipus")int tipus) throws NotFoundException {
+    @PUT
+    @Consumes(MediaType.TEXT_PLAIN)
+    public void moureJugador(String jugador, int tipus) throws NotFoundException {
         Iterator<Partida> it;
         Partida p = null;
         boolean done = false;
@@ -97,8 +116,10 @@ public class PedraPaperTisores {
      * @return Estado de la partida, 404 significa que no ha encontrado la partida.
      * @throws exc.NotFoundException si no encuentra la partida en la lista.
      */
-    @WebMethod(operationName = "consultarEstatPartida")
-    public int consultarEstatPartida(@WebParam(name = "codiPartida")String cp) throws NotFoundException {
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public int consultarEstatPartida(String cp) throws NotFoundException {
         Iterator<Partida> it;
         Partida partida = null;
         for (it = getPartidas().iterator(); it.hasNext();) {
@@ -114,8 +135,9 @@ public class PedraPaperTisores {
         throw new NotFoundException("No se encuentra la partida \"" + cp + "\"");
     }
     
-    @WebMethod(operationName = "acabarJoc")
-    public boolean acabarJoc(@WebParam(name = "codiPartida") String cp) {
+    @DELETE
+    @Consumes(MediaType.TEXT_PLAIN)
+    public boolean acabarJoc(String cp) {
         Iterator<Partida> it;
         Partida p = null;
         for (it = getPartidas().iterator(); it.hasNext();) {
@@ -130,5 +152,4 @@ public class PedraPaperTisores {
         }
         return false;
     }
-    
 }
