@@ -1,5 +1,6 @@
 package restful;
 
+import com.google.gson.Gson;
 import exc.NotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,7 +32,9 @@ public class PedraPaperTisores {
     public static final int PIEDRA = -1;
     public static final int PAPEL = 0;
     public static final int TIJERAS = 1;
-
+    public Gson gson = new Gson();
+    
+    
     public List<Partida> getPartidas() {
         return partidas;
     }
@@ -119,7 +122,7 @@ public class PedraPaperTisores {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public int consultarEstatPartida(String cp) throws NotFoundException {
+    public String consultarEstatPartida(String cp) throws NotFoundException {
         Iterator<Partida> it;
         Partida partida = null;
         for (it = getPartidas().iterator(); it.hasNext();) {
@@ -129,7 +132,7 @@ public class PedraPaperTisores {
                 System.out.println("Estado de la partida: " + qg + "\n");
                 if(qg == 3 || qg == -3)
                     acabarJoc(cp);
-                return qg;
+                return gson.toJson(qg);
             }
         } 
         throw new NotFoundException("No se encuentra la partida \"" + cp + "\"");
