@@ -1,5 +1,6 @@
 package ppt.ws;
 
+import com.google.gson.Gson;
 import exc.NotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ public class PedraPaperTisores {
     public static final int PIEDRA = -1;
     public static final int PAPEL = 0;
     public static final int TIJERAS = 1;
+    private Gson gson = new Gson();
 
     public List<Partida> getPartidas() {
         return partidas;
@@ -98,7 +100,7 @@ public class PedraPaperTisores {
      * @throws exc.NotFoundException si no encuentra la partida en la lista.
      */
     @WebMethod(operationName = "consultarEstatPartida")
-    public int consultarEstatPartida(@WebParam(name = "codiPartida")String cp) throws NotFoundException {
+    public String consultarEstatPartida(@WebParam(name = "codiPartida")String cp) throws NotFoundException {
         Iterator<Partida> it;
         Partida partida = null;
         for (it = getPartidas().iterator(); it.hasNext();) {
@@ -108,7 +110,7 @@ public class PedraPaperTisores {
                 System.out.println("Estado de la partida: " + qg + "\n");
                 if(qg == 3 || qg == -3)
                     acabarJoc(cp);
-                return qg;
+                return gson.toJson(qg);
             }
         } 
         throw new NotFoundException("No se encuentra la partida \"" + cp + "\"");
