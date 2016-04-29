@@ -16,6 +16,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -24,7 +26,7 @@ import javax.ws.rs.core.MediaType;
  * @author mor
  * @version 110416
  */
-@Path("salutacio")
+@Path("/ppt")
 public class PedraPaperTisores {
 
     private List<Partida> partidas = new ArrayList<>();
@@ -59,7 +61,8 @@ public class PedraPaperTisores {
      */
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean iniciarJoc(String cp) {
+    @Path("iniciarJoc/{codiPartida}")
+    public boolean iniciarJoc(@PathParam("{codiPartida}")String cp) {
         Partida p = new Partida();
         p.setId(cp);
         //return getPartidas().add(p);
@@ -72,7 +75,8 @@ public class PedraPaperTisores {
     
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
-    public void afegirJugador(String cp, String j) {
+    @Path("afegirJugador/{codiPartida}/{jugador}")
+    public void afegirJugador(@PathParam("codiPartida")String cp, @PathParam("jugador")String j) {
         Iterator<Partida> it;
         Partida p = null;
         for (it = partidas.iterator(); 
@@ -92,7 +96,8 @@ public class PedraPaperTisores {
     
     @PUT
     @Consumes(MediaType.TEXT_PLAIN)
-    public void moureJugador(String jugador, int tipus) throws NotFoundException {
+    @Path("moureJugador/{jugador}?tipus={tipus}")
+    public void moureJugador(@PathParam("jugador")String jugador, @QueryParam("tipus")int tipus) throws NotFoundException {
         Iterator<Partida> it;
         Partida p = null;
         boolean done = false;
@@ -122,7 +127,8 @@ public class PedraPaperTisores {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public String consultarEstatPartida(String cp) throws NotFoundException {
+    @Path("consultarEstatPartida/{codiPartida}")
+    public String consultarEstatPartida(@PathParam("codiPartida")String cp) throws NotFoundException {
         Iterator<Partida> it;
         Partida partida = null;
         for (it = getPartidas().iterator(); it.hasNext();) {
@@ -140,7 +146,8 @@ public class PedraPaperTisores {
     
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
-    public boolean acabarJoc(String cp) {
+    @Path("acabarJoc/{codiPartida}")
+    public boolean acabarJoc(@PathParam("codiPartida")String cp) {
         Iterator<Partida> it;
         Partida p = null;
         for (it = getPartidas().iterator(); it.hasNext();) {
